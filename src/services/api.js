@@ -1,6 +1,7 @@
 import axios from "axios";
 const API = axios.create({
-  baseURL: "http://localhost:5000/api",
+  // baseURL: "http://localhost:5000/api",
+  baseURL: "https://dsa-tracking-backend.onrender.com/api",
 });
 
 export const getProblems = (page = 1, size = 5, searchTerm = "") => {

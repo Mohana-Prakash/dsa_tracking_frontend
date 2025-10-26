@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { createProblem, getProblemById, updateProblem } from "../services/api";
 import { toast } from "react-toastify";
 import CodeEditor from "./codeViewer";
+import { problemFields } from "./constant";
 
 export default function ProblemComp({ modalData, setShowPopup }) {
   const [formData, setFormData] = useState({
@@ -65,32 +66,6 @@ export default function ProblemComp({ modalData, setShowPopup }) {
   useEffect(() => {
     if (modalData.problemId) fetchProblemById();
   }, [modalData.problemId]);
-
-  const problemFields = [
-    { name: "title", label: "Title", input: "input", type: "text" },
-    {
-      name: "leetCodeNo",
-      label: "Leetcode Problem Number",
-      input: "input",
-      type: "text",
-    },
-    { name: "pattern", label: "Pattern", input: "input", type: "text" },
-    { name: "idea", label: "Idea", input: "textarea" },
-    { name: "steps", label: "Steps", input: "textarea" },
-    { name: "code", label: "Code", input: "codeViewer" },
-    {
-      name: "timeComplexity",
-      label: "Time Complexity",
-      input: "input",
-      type: "text",
-    },
-    {
-      name: "spaceComplexity",
-      label: "Space Complexity",
-      input: "input",
-      type: "text",
-    },
-  ];
 
   return (
     <form onSubmit={handleSubmit} className="problem-form">

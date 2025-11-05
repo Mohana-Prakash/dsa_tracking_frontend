@@ -262,3 +262,10 @@ img {
   background-color: hsl(43 100% 50% / 0.1);
   border: 1px solid hsl(43 100% 50%);
 }
+
+.no-problems-text {
+  color: gray;
+  text-transform: capitalize;
+  font-size: 20px;
+  text-align: center;
+}

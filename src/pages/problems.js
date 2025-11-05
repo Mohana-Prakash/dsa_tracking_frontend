@@ -3,6 +3,8 @@ import { deleteProblem, getProblems } from "../services/api";
 import Modal from "../components/modal";
 import ProblemComp from "../components/problemComp";
 import moment from "moment";
+import { toast } from "react-toastify";
+import ProblemCard from "../components/problemCard";
 
 export default function Problems() {
   const [showPopup, setShowPopup] = useState({
@@ -14,24 +16,30 @@ export default function Problems() {
   const [page, setPage] = useState(1);
   const [size] = useState(20);
   const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   const fetchProblems = async () => {
+    setLoading(true);
     try {
       const res = await getProblems(page, size, searchTerm);
       setProblems(res.data);
       setTotalPages(res.totalPages);
     } catch (err) {
       console.error("Error in fetchProblems:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
   const deleteHandler = async (problemId) => {
     try {
       let res = await deleteProblem(problemId);
-      console.log(res);
-      fetchProblems();
+      if (res.status === 200) {
+        toast.success("Problem deleted successfully");
+        fetchProblems();
+      }
     } catch (err) {
-      console.error("Error in deleteHandler:", err);
+      toast.error(err.response?.data?.error || "Error deleting problem");
     }
   };
 
@@ -46,6 +54,10 @@ export default function Problems() {
       problemId: null,
     });
   };
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <>
@@ -101,53 +113,11 @@ export default function Problems() {
         </div>
 
         <div className="cards-wrapper">
-          {problems.map((p) => (
-            <div key={p._id} className="problem-card">
-              <p className="problem-card-title">{p.title}</p>
-              <div className="problem-card-body">
-                <p>
-                  <span>Leetcode:</span> {p.leetCodeNo}
-                </p>
-                <p>
-                  Pattern: <span className="problem-pattern">{p.pattern}</span>
-                </p>
-                <p>
-                  Difficult Level:{" "}
-                  <span
-                    className={`problem-pattern difficulty-badge ${p.difficultyLevel}`}
-                  >
-                    {p.difficultyLevel}
-                  </span>
-                </p>
-                <p>Created at: {moment(p.createdAt).format("MMMM Do, YYYY")}</p>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <button
-                    className="view-update-btn"
-                    onClick={() =>
-                      setShowPopup({
-                        isOpen: true,
-                        title: "viewUpdate",
-                        problemId: p._id,
-                      })
-                    }
-                  >
-                    View / Update
-                  </button>
-                  <button
-                    className="delete-btn"
-                    onClick={() => deleteHandler(p._id)}
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
+          {problems.length === 0 ? (
+            <p className="no-problems-text">No problems found.</p>
+          ) : (
+            problems.map((p) => <ProblemCard data={p} />)
+          )}
         </div>
       </div>
 

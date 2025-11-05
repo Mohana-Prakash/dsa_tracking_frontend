@@ -12,23 +12,28 @@ export const getProblems = (page = 1, size = 5, searchTerm = "") => {
     })
     .catch((error) => {
       console.error("Error fetching problems:", error);
-      throw error; // rethrow for caller to handle
+      throw error;
     });
 };
 
-export const createProblem = (data) => {
-  API.post("/problems", data)
-    .then((response) => {
-      return response?.data;
-    })
-    .catch((error) => {
-      console.error("Error creating problem:", error);
-      return error;
-    });
+export const createProblem = async (data) => {
+  const response = await API.post("/problems", data);
+  return {
+    message: "Problem created successfully",
+    data: response.data,
+    status: response.status,
+  };
+};
+
+export const updateProblem = async (id, data) => {
+  const response = await API.put(`/problems/${id}`, data);
+  return {
+    message: "Problem updated successfully",
+    data: response.data,
+    status: response.status,
+  };
 };
 
 export const getProblemById = (id) => API.get(`/problems/${id}`);
-
-export const updateProblem = (id, data) => API.put(`/problems/${id}`, data);
 
 export const deleteProblem = (id) => API.delete(`/problems/${id}`);

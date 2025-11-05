@@ -28,38 +28,51 @@ export default function ProblemComp({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("start");
+
+    const isAdd = modalData.title === "add";
+
     try {
-      await (modalData.title === "add"
-        ? createProblem(formData)
-        : updateProblem(modalData.problemId, formData));
-      fetchProblems();
-      toast.success(
-        `Problem ${
-          modalData.title === "add" ? "added" : "updated"
-        } successfully!`
-      );
+      const res = isAdd
+        ? await createProblem(formData)
+        : await updateProblem(modalData.problemId, formData);
 
-      setFormData({
-        title: "",
-        leetCodeNo: "",
-        difficultyLevel: "",
-        pattern: "",
-        idea: "",
-        steps: "",
-        timeComplexity: "",
-        spaceComplexity: "",
-        code: "",
-        otherInfo: "",
-      });
+      console.log(res);
+      const { status, message } = res;
 
-      setShowPopup({
-        isOpen: false,
-        title: "",
-        problemId: null,
-      });
+      if ([200, 201].includes(status)) {
+        fetchProblems();
+        toast.success(message);
+
+        resetForm();
+        closePopup();
+      }
     } catch (err) {
       console.error("Error in handleSubmit:", err);
     }
+  };
+
+  const resetForm = () => {
+    setFormData({
+      title: "",
+      leetCodeNo: "",
+      difficultyLevel: "",
+      pattern: "",
+      idea: "",
+      steps: "",
+      timeComplexity: "",
+      spaceComplexity: "",
+      code: "",
+      otherInfo: "",
+    });
+  };
+
+  const closePopup = () => {
+    setShowPopup({
+      isOpen: false,
+      title: "",
+      problemId: null,
+    });
   };
 
   const fetchProblemById = async () => {
@@ -74,7 +87,6 @@ export default function ProblemComp({
   useEffect(() => {
     if (modalData.problemId) fetchProblemById();
   }, [modalData.problemId]);
-  console.log(formData);
 
   return (
     <form onSubmit={handleSubmit} className="problem-form">

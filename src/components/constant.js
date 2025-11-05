@@ -178,7 +178,7 @@ export const problemFields = [
     name: "leetCodeNo",
     label: "Leetcode Problem Number",
     input: "input",
-    type: "text",
+    type: "number",
   },
   {
     name: "difficultyLevel",

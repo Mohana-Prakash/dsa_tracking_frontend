@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getProblems } from "../services/api";
+import { deleteProblem, getProblems } from "../services/api";
 import Modal from "../components/modal";
 import ProblemComp from "../components/problemComp";
 import moment from "moment";
@@ -25,6 +25,16 @@ export default function Problems() {
     }
   };
 
+  const deleteHandler = async (problemId) => {
+    try {
+      let res = await deleteProblem(problemId);
+      console.log(res);
+      fetchProblems();
+    } catch (err) {
+      console.error("Error in deleteHandler:", err);
+    }
+  };
+
   useEffect(() => {
     fetchProblems();
   }, [page]);
@@ -40,7 +50,7 @@ export default function Problems() {
   return (
     <>
       <div className="problems-header">
-        <p className="problems-title">DSA Notes Tracker</p>
+        <p className="problems-title">DSA Problems Tracker</p>
         <button
           className="add-problem-btn"
           onClick={() =>
@@ -101,19 +111,40 @@ export default function Problems() {
                 <p>
                   Pattern: <span className="problem-pattern">{p.pattern}</span>
                 </p>
-                <p>Created at: {moment(p.createdAt).format("MMMM Do, YYYY")}</p>
-                <p
-                  className="view-link"
-                  onClick={() =>
-                    setShowPopup({
-                      isOpen: true,
-                      title: "viewUpdate",
-                      problemId: p._id,
-                    })
-                  }
-                >
-                  View / Update
+                <p>
+                  Difficult Level:{" "}
+                  <span
+                    className={`problem-pattern difficulty-badge ${p.difficultyLevel}`}
+                  >
+                    {p.difficultyLevel}
+                  </span>
                 </p>
+                <p>Created at: {moment(p.createdAt).format("MMMM Do, YYYY")}</p>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <button
+                    className="view-update-btn"
+                    onClick={() =>
+                      setShowPopup({
+                        isOpen: true,
+                        title: "viewUpdate",
+                        problemId: p._id,
+                      })
+                    }
+                  >
+                    View / Update
+                  </button>
+                  <button
+                    className="delete-btn"
+                    onClick={() => deleteHandler(p._id)}
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             </div>
           ))}
@@ -128,7 +159,11 @@ export default function Problems() {
             showPopup.title === "add" ? "Add Problem" : "View / Update Problem"
           }
         >
-          <ProblemComp modalData={showPopup} setShowPopup={setShowPopup} />
+          <ProblemComp
+            modalData={showPopup}
+            setShowPopup={setShowPopup}
+            fetchProblems={fetchProblems}
+          />
         </Modal>
       )}
     </>

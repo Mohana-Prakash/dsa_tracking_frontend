@@ -2,18 +2,24 @@ import React, { useState, useEffect } from "react";
 import { createProblem, getProblemById, updateProblem } from "../services/api";
 import { toast } from "react-toastify";
 import CodeEditor from "./codeViewer";
-import { problemFields } from "./constant";
+import { difficultLevel, problemFields } from "./constant";
 
-export default function ProblemComp({ modalData, setShowPopup }) {
+export default function ProblemComp({
+  modalData,
+  setShowPopup,
+  fetchProblems,
+}) {
   const [formData, setFormData] = useState({
     title: "",
     leetCodeNo: "",
+    difficultyLevel: "",
     pattern: "",
     idea: "",
     steps: "",
     timeComplexity: "",
     spaceComplexity: "",
     code: "",
+    otherInfo: "",
   });
 
   const handleChange = (e) => {
@@ -26,7 +32,7 @@ export default function ProblemComp({ modalData, setShowPopup }) {
       await (modalData.title === "add"
         ? createProblem(formData)
         : updateProblem(modalData.problemId, formData));
-
+      fetchProblems();
       toast.success(
         `Problem ${
           modalData.title === "add" ? "added" : "updated"
@@ -36,12 +42,14 @@ export default function ProblemComp({ modalData, setShowPopup }) {
       setFormData({
         title: "",
         leetCodeNo: "",
+        difficultyLevel: "",
         pattern: "",
         idea: "",
         steps: "",
         timeComplexity: "",
         spaceComplexity: "",
         code: "",
+        otherInfo: "",
       });
 
       setShowPopup({
@@ -66,6 +74,7 @@ export default function ProblemComp({ modalData, setShowPopup }) {
   useEffect(() => {
     if (modalData.problemId) fetchProblemById();
   }, [modalData.problemId]);
+  console.log(formData);
 
   return (
     <form onSubmit={handleSubmit} className="problem-form">
@@ -97,6 +106,16 @@ export default function ProblemComp({ modalData, setShowPopup }) {
                   setFormData({ ...formData, [field.name]: newCode })
                 }
               />
+            ) : field.input === "select" ? (
+              <select
+                onChange={(e) =>
+                  setFormData({ ...formData, [field.name]: e.target.value })
+                }
+              >
+                {difficultLevel.map((e) => (
+                  <option value={e.name}>{e.label}</option>
+                ))}
+              </select>
             ) : (
               <input
                 type={field.type}

@@ -180,10 +180,13 @@ export const problemFields = [
     input: "input",
     type: "text",
   },
+  {
+    name: "difficultyLevel",
+    label: "Difficult Level",
+    input: "select",
+    type: "text",
+  },
   { name: "pattern", label: "Pattern", input: "input", type: "text" },
-  { name: "idea", label: "Idea", input: "textarea" },
-  { name: "steps", label: "Steps", input: "textarea" },
-  { name: "code", label: "Code", input: "codeViewer" },
   {
     name: "timeComplexity",
     label: "Time Complexity",
@@ -196,4 +199,14 @@ export const problemFields = [
     input: "input",
     type: "text",
   },
+  { name: "idea", label: "Idea", input: "textarea" },
+  { name: "steps", label: "Steps", input: "textarea" },
+  { name: "code", label: "Code", input: "codeViewer" },
+  { name: "otherInfo", label: "Other Information", input: "textarea" },
+];
+
+export const difficultLevel = [
+  { name: "easy", label: "Easy" },
+  { name: "medium", label: "Medium" },
+  { name: "hard", label: "Hard" },
 ];

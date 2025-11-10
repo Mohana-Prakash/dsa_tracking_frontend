@@ -1,4 +1,3 @@
-import React from "react";
 import moment from "moment";
 
 function ProblemCard({ data, setShowPopup, deleteHandler }) {
@@ -7,24 +6,26 @@ function ProblemCard({ data, setShowPopup, deleteHandler }) {
       <p className="problem-card-title">{data.title}</p>
       <div className="problem-card-body">
         <p>
-          <span>Leetcode:</span> {data.leetCodeNo}
+          Leetcode: <span>{data.leetCodeNo}</span>
         </p>
         <p>
-          Pattern: <span className="problem-pattern">{data.pattern}</span>
+          Pattern: <span>{data.pattern}</span>
         </p>
         <p>
           Difficult Level:{" "}
-          <span
-            className={`problem-pattern difficulty-badge ${data.difficultyLevel}`}
-          >
+          <span className={`difficulty-badge ${data.difficultyLevel}`}>
             {data.difficultyLevel}
           </span>
         </p>
-        <p>Created at: {moment(data.createdAt).format("MMMM Do, YYYY")}</p>
+        <p>
+          Created at:{" "}
+          <span>{moment(data.createdAt).format("MMM Do, YYYY HH:mm")}</span>
+        </p>
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
+            marginTop: "15px",
           }}
         >
           <button

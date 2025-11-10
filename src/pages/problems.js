@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { deleteProblem, getProblems } from "../services/api";
 import Modal from "../components/modal";
 import ProblemComp from "../components/problemComp";
-import moment from "moment";
 import { toast } from "react-toastify";
 import ProblemCard from "../components/problemCard";
 
@@ -116,7 +115,13 @@ export default function Problems() {
           {problems.length === 0 ? (
             <p className="no-problems-text">No problems found.</p>
           ) : (
-            problems.map((p) => <ProblemCard data={p} />)
+            problems.map((p) => (
+              <ProblemCard
+                data={p}
+                setShowPopup={setShowPopup}
+                deleteHandler={deleteHandler}
+              />
+            ))
           )}
         </div>
       </div>

@@ -41,6 +41,16 @@ img {
   width: 100%;
 }
 
+p {
+  font-size: 14px;
+  margin: 0 0 10px 0;
+  font-weight: 600;
+}
+
+span {
+  font-weight: normal;
+}
+
 /* ======= Header Section ======= */
 .problems-header {
   display: flex;
@@ -228,7 +238,6 @@ img {
   background-color: #007bff;
   color: white;
   cursor: pointer;
-  margin-top: 10px;
   align-self: flex-start;
   transition: background-color 0.3s;
 }
@@ -240,6 +249,7 @@ img {
 .difficulty-badge {
   padding: 2px 6px;
   border-radius: 4px;
+  text-transform: capitalize;
 }
 
 /* Hard */
@@ -268,4 +278,14 @@ img {
   text-transform: capitalize;
   font-size: 20px;
   text-align: center;
+}
+
+.input-label-div {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.input-label-div label {
+  flex: 1;
 }

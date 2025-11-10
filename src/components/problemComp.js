@@ -28,7 +28,26 @@ export default function ProblemComp({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("start");
+
+    const requiredFields = [
+      "title",
+      "leetCodeNo",
+      "difficultyLevel",
+      "pattern",
+      "idea",
+      "steps",
+      "timeComplexity",
+      "spaceComplexity",
+      "code",
+    ];
+
+    const missing = requiredFields.filter((field) => !formData[field]?.trim());
+    console.log(missing);
+
+    if (missing.length > 0) {
+      toast.error(`Please fill all required fields`);
+      return;
+    }
 
     const isAdd = modalData.title === "add";
 
@@ -37,7 +56,6 @@ export default function ProblemComp({
         ? await createProblem(formData)
         : await updateProblem(modalData.problemId, formData);
 
-      console.log(res);
       const { status, message } = res;
 
       if ([200, 201].includes(status)) {
@@ -49,6 +67,7 @@ export default function ProblemComp({
       }
     } catch (err) {
       console.error("Error in handleSubmit:", err);
+      toast.error("Something went wrong! Please try again.");
     }
   };
 
@@ -100,7 +119,9 @@ export default function ProblemComp({
                 : ""
             }`}
           >
-            <label htmlFor={field.name}>{field.label}:</label>
+            <div>
+              <label htmlFor={field.name}>{field.label}:</label>
+            </div>
             {field.input === "textarea" ? (
               <textarea
                 id={field.name}
@@ -120,10 +141,16 @@ export default function ProblemComp({
               />
             ) : field.input === "select" ? (
               <select
+                name={field.name}
+                value={formData[field.name]}
                 onChange={(e) =>
                   setFormData({ ...formData, [field.name]: e.target.value })
                 }
+                required
               >
+                <option value="" disabled>
+                  Select
+                </option>
                 {difficultLevel.map((e) => (
                   <option value={e.name}>{e.label}</option>
                 ))}

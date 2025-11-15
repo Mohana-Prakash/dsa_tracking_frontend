@@ -12,7 +12,6 @@ export default function ProblemCard({
 
   const confirmDelete = () => {
     if (window.confirm("Are you sure you want to delete this problem?")) {
-      deleteHandler(data._id);
     }
   };
 
@@ -22,7 +21,7 @@ export default function ProblemCard({
       className="
         w-full sm:w-[48%] lg:w-[23%] p-5 
         rounded-2xl border border-gray-200 
-        bg-gradient-to-br from-sky-50 via-white to-teal-50
+        bg-cyan-50
         shadow-md hover:shadow-xl
         transition-all duration-200
       "
@@ -72,7 +71,7 @@ export default function ProblemCard({
                   </button>
                   <button
                     className="text-center w-full text-left px-4 py-2 text-red-700 font-bold"
-                    onClick={confirmDelete}
+                    onClick={() => deleteHandler(data._id)}
                   >
                     DELETE
                   </button>

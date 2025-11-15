@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { createProblem, getProblemById, updateProblem } from "../services/api";
 import { toast } from "react-toastify";
 import CodeEditor from "./codeViewer";
-import { difficultLevel, problemFields } from "./constant";
+import { ProblemFields } from "./constant";
 
 export default function AddEditProblemComp({
   modalData,
@@ -19,8 +19,12 @@ export default function AddEditProblemComp({
     timeComplexity: "",
     spaceComplexity: "",
     code: "",
-    otherInfo: "",
+    otherInfo: "No Information",
   });
+
+  useEffect(() => {
+    if (modalData.problemId) fetchProblemById();
+  }, [modalData.problemId]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -99,15 +103,11 @@ export default function AddEditProblemComp({
     }
   };
 
-  useEffect(() => {
-    if (modalData.problemId) fetchProblemById();
-  }, [modalData.problemId]);
-
   return (
     <div className="flex flex-col">
       {/* Form Fields Grid */}
       <div className="flex flex-wrap gap-5 mb-6">
-        {problemFields.map((field) => (
+        {ProblemFields.map((field) => (
           <div
             key={field.name}
             className={`flex flex-col ${
@@ -157,9 +157,9 @@ export default function AddEditProblemComp({
                 <option value="" disabled>
                   Select
                 </option>
-                {difficultLevel.map((e) => (
-                  <option key={e.name} value={e.name}>
-                    {e.label}
+                {field.options.map((e) => (
+                  <option key={e.meaning} value={e.meaning}>
+                    {e.notation}
                   </option>
                 ))}
               </select>

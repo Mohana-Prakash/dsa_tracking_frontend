@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import ProblemCard from "../components/problemCard";
 import ViewProblemComp from "../components/viewProblemComp";
 import Header from "../components/header";
+import Swal from "sweetalert2";
 
 export default function Problems() {
   const [isAdmin, setIsAdmin] = useState(!!localStorage.getItem("adminToken"));
@@ -34,10 +35,18 @@ export default function Problems() {
   };
 
   const deleteHandler = async (problemId) => {
-    if (!alert("Are you sure you want to delete this problem?")) return;
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You can't undo this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Delete",
+    });
+
+    if (!result.isConfirmed) return;
 
     try {
-      let res = await deleteProblem(problemId);
+      const res = await deleteProblem(problemId);
       if (res.status === 200) {
         toast.success("Problem deleted successfully");
         fetchProblems();
@@ -58,14 +67,6 @@ export default function Problems() {
       problemId: null,
     });
   };
-
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="w-12 h-12 border-4 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    );
-  }
 
   return (
     <>
@@ -164,6 +165,12 @@ export default function Problems() {
             fetchProblems={fetchProblems}
           />
         </Modal>
+      )}
+
+      {loading && (
+        <div className="flex justify-center items-center h-screen">
+          <div className="w-12 h-12 border-4 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
+        </div>
       )}
     </>
   );

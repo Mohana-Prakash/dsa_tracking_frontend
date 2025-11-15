@@ -1,59 +1,3 @@
-export const TIME_COMPLEXITIES = [
-  {
-    notation: "O(1)",
-    meaning: "Constant time — does not depend on input size.",
-  },
-  {
-    notation: "O(log n)",
-    meaning:
-      "Logarithmic time — divides problem in half each step (e.g. binary search).",
-  },
-  {
-    notation: "O(n)",
-    meaning: "Linear time — single pass through input (e.g. array traversal).",
-  },
-  {
-    notation: "O(n log n)",
-    meaning:
-      "Linearithmic — common in efficient sorting (Merge Sort, Quick Sort).",
-  },
-  {
-    notation: "O(n²)",
-    meaning: "Quadratic — nested loops (e.g. bubble sort, pair comparisons).",
-  },
-  {
-    notation: "O(n³)",
-    meaning: "Cubic — triple nested loops (e.g. matrix multiplication).",
-  },
-  {
-    notation: "O(2ⁿ)",
-    meaning:
-      "Exponential — recursive branching (e.g. subset generation, backtracking).",
-  },
-  {
-    notation: "O(n!)",
-    meaning:
-      "Factorial — all permutations (e.g. traveling salesman, brute force).",
-  },
-];
-
-export const SPACE_COMPLEXITIES = [
-  {
-    notation: "O(1)",
-    meaning: "Constant space — no extra data structures used.",
-  },
-  {
-    notation: "O(log n)",
-    meaning:
-      "Logarithmic space — recursive stack depth (e.g. binary search tree).",
-  },
-  {
-    notation: "O(n)",
-    meaning: "Linear space — proportional to input (e.g. arrays, hashmaps).",
-  },
-  { notation: "O(n²)", meaning: "Quadratic space — 2D arrays, DP tables." },
-];
-
 export const DSA_PATTERNS = [
   {
     pattern: "Sliding Window",
@@ -172,7 +116,67 @@ export const DSA_PATTERNS = [
   },
 ];
 
-export const problemFields = [
+const difficultLevel = [
+  { meaning: "easy", notation: "Easy" },
+  { meaning: "medium", notation: "Medium" },
+  { meaning: "hard", notation: "Hard" },
+];
+
+const TIME_COMPLEXITIES = [
+  {
+    notation: "Constant - O(1)",
+    meaning: "O(1)",
+  },
+  {
+    notation: "Logarithmic - O(log n)",
+    meaning: "O(log n)",
+  },
+  {
+    notation: "Linear - O(n)",
+    meaning: "O(n)",
+  },
+  {
+    notation: "Linearithmic - O(n log n)",
+    meaning: "O(n log n)",
+  },
+  {
+    notation: "Quadratic - O(n²)",
+    meaning: "O(n²)",
+  },
+  {
+    notation: "Cubic - O(n³)",
+    meaning: "O(n³)",
+  },
+  {
+    notation: "Exponential - O(2ⁿ)",
+    meaning: "O(2ⁿ)",
+  },
+  {
+    notation: "Factorial - O(n!)",
+    meaning: "O(n!)",
+  },
+];
+
+const SPACE_COMPLEXITIES = [
+  {
+    notation: "Constant - O(1)",
+    meaning: "O(1)",
+  },
+  {
+    notation: "Logarithmic - O(log n)",
+    meaning: "O(log n)",
+  },
+  {
+    notation: "Linear - O(n)",
+    meaning: "O(n)",
+  },
+  {
+    notation: "Quadratic - O(n²)",
+    meaning: "O(n²)",
+  },
+];
+
+export const ProblemFields = [
   { name: "title", label: "Title", input: "input", type: "text" },
   {
     name: "leetCodeNo",
@@ -185,28 +189,25 @@ export const problemFields = [
     label: "Difficult Level",
     input: "select",
     type: "text",
+    options: difficultLevel,
   },
   { name: "pattern", label: "Pattern", input: "input", type: "text" },
   {
     name: "timeComplexity",
     label: "Time Complexity",
-    input: "input",
+    input: "select",
     type: "text",
+    options: TIME_COMPLEXITIES,
   },
   {
     name: "spaceComplexity",
     label: "Space Complexity",
-    input: "input",
+    input: "select",
     type: "text",
+    options: SPACE_COMPLEXITIES,
   },
   { name: "idea", label: "Idea", input: "textarea" },
   { name: "steps", label: "Steps", input: "textarea" },
   { name: "code", label: "Code", input: "codeViewer" },
   { name: "otherInfo", label: "Other Information", input: "textarea" },
-];
-
-export const difficultLevel = [
-  { name: "easy", label: "Easy" },
-  { name: "medium", label: "Medium" },
-  { name: "hard", label: "Hard" },
 ];

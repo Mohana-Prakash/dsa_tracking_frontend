@@ -27,6 +27,7 @@ export default function AddEditProblemComp({
   };
 
   const handleSubmit = async (e) => {
+    alert("34567");
     e.preventDefault();
 
     const requiredFields = [
@@ -41,9 +42,9 @@ export default function AddEditProblemComp({
       "code",
     ];
 
-    const missing = requiredFields.filter((f) => !formData[f]?.trim());
+    const missing = requiredFields.filter((f) => !formData[f]);
     if (missing.length > 0) {
-      toast.error("Please fill all required fields");
+      alert("Please fill all required fields");
       return;
     }
 
@@ -104,7 +105,7 @@ export default function AddEditProblemComp({
   }, [modalData.problemId]);
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col">
+    <div className="flex flex-col">
       {/* Form Fields Grid */}
       <div className="flex flex-wrap gap-5 mb-6">
         {problemFields.map((field) => (
@@ -180,11 +181,11 @@ export default function AddEditProblemComp({
 
       {/* Submit Button */}
       <button
-        type="submit"
+        onClick={handleSubmit}
         className="self-start px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
       >
         {modalData.title === "add" ? "Add Problem" : "Update Problem"}
       </button>
-    </form>
+    </div>
   );
 }

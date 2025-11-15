@@ -27,7 +27,6 @@ export default function AddEditProblemComp({
   };
 
   const handleSubmit = async (e) => {
-    alert("34567");
     e.preventDefault();
 
     const requiredFields = [

@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const API = axios.create({
-  // baseURL: "https://dsatrackingbackend-production.up.railway.app/api",
-  baseURL: "http://localhost:5000/api",
+  baseURL: "https://dsatrackingbackend-production.up.railway.app/api",
+  // baseURL: "http://localhost:5000/api",
 });
 
 API.interceptors.request.use((config) => {
@@ -16,8 +16,8 @@ API.interceptors.request.use((config) => {
 });
 
 const API_WITHOUT_AUTH = axios.create({
-  // baseURL: "https://dsatrackingbackend-production.up.railway.app/api",
-  baseURL: "http://localhost:5000/api",
+  baseURL: "https://dsatrackingbackend-production.up.railway.app/api",
+  // baseURL: "http://localhost:5000/api",
 });
 
 export const adminLogin = async (email) => {

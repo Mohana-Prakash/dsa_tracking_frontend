@@ -23,8 +23,13 @@ function Header({ setShowPopup, setIsAdmin, isAdmin }) {
   };
 
   return (
-    <div className="flex justify-between items-center bg-gray-200 px-5 py-3 shadow-sm">
-      <p className="text-xl font-semibold m-0">DSA Problems Tracker</p>
+    <div className="flex justify-between items-center bg-white px-5 py-3 shadow-sm">
+      <div className="flex items-center gap-3">
+        <div className="w-16">
+          <img src="/dsa_logo.png" alt="DSA_Logo" className="w-full" />
+        </div>
+        <p className="text-xl font-semibold m-0">Problems Tracker</p>
+      </div>
 
       <div className="flex gap-3">
         {!isAdmin && (

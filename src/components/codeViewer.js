@@ -4,7 +4,7 @@ import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
 import "prismjs/themes/prism-tomorrow.css";
 
-export default function CodeEditor({ code, onChange }) {
+export default function CodeEditor({ code, onChange, isEditable = false }) {
   return (
     <div
       style={{
@@ -27,6 +27,7 @@ export default function CodeEditor({ code, onChange }) {
           outline: "none",
           border: "none",
         }}
+        readOnly={!isEditable}
       />
     </div>
   );

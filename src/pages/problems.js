@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import { deleteProblem, getProblems } from "../services/api";
 import Modal from "../components/modal";
-import ProblemComp from "../components/problemComp";
+import AddEditProblemComp from "../components/addEditProblemComp";
 import { toast } from "react-toastify";
 import ProblemCard from "../components/problemCard";
+import ViewProblemComp from "../components/viewProblemComp";
+import Header from "../components/header";
 
 export default function Problems() {
+  const [isAdmin, setIsAdmin] = useState(!!localStorage.getItem("adminToken"));
   const [showPopup, setShowPopup] = useState({
     title: "",
     isOpen: false,
@@ -31,6 +34,8 @@ export default function Problems() {
   };
 
   const deleteHandler = async (problemId) => {
+    if (!alert("Are you sure you want to delete this problem?")) return;
+
     try {
       let res = await deleteProblem(problemId);
       if (res.status === 200) {
@@ -55,78 +60,88 @@ export default function Problems() {
   };
 
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="w-12 h-12 border-4 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
   }
 
   return (
     <>
-      <div className="problems-header">
-        <p className="problems-title">DSA Problems Tracker</p>
-        <button
-          className="add-problem-btn"
-          onClick={() =>
-            setShowPopup({
-              isOpen: true,
-              title: "add",
-              problemId: null,
-            })
-          }
-        >
-          Add Problem
-        </button>
-      </div>
+      {/* Header */}
+      <Header
+        setShowPopup={setShowPopup}
+        setIsAdmin={setIsAdmin}
+        isAdmin={isAdmin}
+      />
 
-      <div className="problems-container">
-        <div className="filter-section">
-          <div className="search-section">
+      {/* Search + Pagination */}
+      <div className="p-5">
+        <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+          {/* Search */}
+          <div className="flex items-center w-full md:w-1/2 gap-2">
             <input
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search Problem"
-              className="search-input"
+              className="border border-rose-300 rounded-md px-3 py-2 w-full outline-none text-gray-700"
             />
-            <button onClick={fetchProblems} className="search-btn">
+            <button
+              onClick={fetchProblems}
+              className="px-4 py-2 border border-rose-300 rounded-md bg-rose-600 text-white transition hover:bg-rose-500"
+            >
               Search
             </button>
           </div>
-          <div>
+
+          {/* Pagination */}
+          <div className="flex items-center gap-3">
             <button
               disabled={page <= 1}
               onClick={() => setPage(page - 1)}
-              className="page-btn"
+              className="px-3 py-1 border border-rose-300 bg-rose-600 text-white rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Prev
             </button>
-            <span className="page-info">
+
+            <span className="text-white">
               Page {page} / {totalPages}
             </span>
+
             <button
               disabled={page >= totalPages}
               onClick={() => setPage(page + 1)}
-              className="page-btn"
+              className="px-3 py-1 border border-rose-300 bg-rose-600 text-white rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Next
             </button>
           </div>
         </div>
 
-        <div className="cards-wrapper">
+        {/* Cards */}
+        <div className="flex flex-wrap gap-5">
           {problems.length === 0 ? (
-            <p className="no-problems-text">No problems found.</p>
+            <p className="text-gray-600 text-lg text-center w-full">
+              No problems found.
+            </p>
           ) : (
             problems.map((p) => (
               <ProblemCard
+                key={p._id}
                 data={p}
                 setShowPopup={setShowPopup}
                 deleteHandler={deleteHandler}
+                isAdmin={isAdmin}
               />
             ))
           )}
         </div>
       </div>
 
-      {showPopup.isOpen && (
+      {/* Modal */}
+      {(showPopup.title === "add" || showPopup.title === "edit") && (
         <Modal
           isOpen={showPopup}
           onClose={modalCloseHandler}
@@ -134,7 +149,16 @@ export default function Problems() {
             showPopup.title === "add" ? "Add Problem" : "View / Update Problem"
           }
         >
-          <ProblemComp
+          <AddEditProblemComp
+            modalData={showPopup}
+            setShowPopup={setShowPopup}
+            fetchProblems={fetchProblems}
+          />
+        </Modal>
+      )}
+      {showPopup.title === "view" && (
+        <Modal isOpen={showPopup} onClose={modalCloseHandler}>
+          <ViewProblemComp
             modalData={showPopup}
             setShowPopup={setShowPopup}
             fetchProblems={fetchProblems}

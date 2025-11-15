@@ -27,12 +27,14 @@ function Header({ setShowPopup, setIsAdmin, isAdmin }) {
       <p className="text-xl font-semibold m-0">DSA Problems Tracker</p>
 
       <div className="flex gap-3">
-        <button
-          className="px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-600 transition"
-          onClick={handleAdminLogin}
-        >
-          Admin Login
-        </button>
+        {!isAdmin && (
+          <button
+            className="px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-600 transition"
+            onClick={handleAdminLogin}
+          >
+            Admin Login
+          </button>
+        )}
 
         {isAdmin && (
           <button
